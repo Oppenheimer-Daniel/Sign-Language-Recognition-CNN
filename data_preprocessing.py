@@ -34,16 +34,23 @@ class AddGaussianNoise(object):
 
 # ─── Transforms ───────────────────────────────────────────────────────────────
 train_transforms = transforms.Compose([
-    transforms.Resize((IMG_SIZE, IMG_SIZE)),
-    transforms.RandomRotation(15),
-    transforms.RandomAffine(0, translate=(0.1, 0.1), shear=10, scale=(0.9, 1.1)),
-    transforms.ColorJitter(brightness=0.2),
+    # 1. Zoom/Crop (The "Aggressive" part)
+    # scale=(0.4, 1.0) means it can zoom in until only 40% of the hand is visible
+    # ratio=(0.9, 1.1) keeps the hand from looking too "stretched"
+    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.4, 1.0), ratio=(0.75, 1.33)),
+    
+    # 2. Hand Orientation (The "Left/Right" fix)
+    transforms.RandomHorizontalFlip(p=0.5),
+    
+    # 3. Angle and Position
+    transforms.RandomRotation(20), # Increased from 15 for more variety
+    transforms.RandomAffine(0, translate=(0.2, 0.2), shear=10), # More translation
+    
+    # 4. Lighting and Texture
+    transforms.ColorJitter(brightness=0.3, contrast=0.3),
     transforms.ToTensor(),
-    # Add noise here: std=0.05 is a good starting point (5% noise)
-    AddGaussianNoise(0., 0.05), 
+    AddGaussianNoise(0., 0.05),
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.7, 1.0)), # Zoom in/out randomly
-    transforms.RandomPerspective(distortion_scale=0.2, p=0.5), # Change hand angle
 ])
 
 val_transforms = transforms.Compose([
