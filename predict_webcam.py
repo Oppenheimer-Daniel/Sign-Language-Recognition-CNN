@@ -18,8 +18,9 @@ MODEL_TYPE = "transfer"    # "custom" | "transfer"
 IMG_SIZE   = 64
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-ROI_TOP, ROI_LEFT     = 100, 400
-ROI_BOTTOM, ROI_RIGHT = 400, 700
+# Updated for the Left Side
+ROI_TOP, ROI_LEFT     = 100, 50   # Moved from 400 to 50
+ROI_BOTTOM, ROI_RIGHT = 400, 350  # Kept the width at 300 pixels (350 - 50)
 CONF_THRESHOLD        = 0.70
 
 # Inference transform (no augmentation)
