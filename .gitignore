@@ -1,0 +1,13 @@
+# Ignore the massive dataset
+archive/
+
+# Ignore the heavy model weights (we'll move these manually)
+saved_models/
+
+# Ignore Python system files
+__pycache__/
+*.pyc
+
+# Ignore local visualization results
+sample_images.png
+training_curves.png

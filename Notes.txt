@@ -1,0 +1,9 @@
+1. The "Identical Frames" Leakage
+The ASL Alphabet dataset from Kaggle is notorious for containing many images that are nearly identical (sequential frames from a video).
+
+Even if your indices don't overlap, if the image at index 500 is almost pixel-perfect to index 501, and one goes to training while the other goes to validation, your model is essentially "memorizing" the exact image rather than learning the generalized features of the hand sign.
+
+The Fix:
+Instead of a random split, use a Grouped Split or a Stratified Split by Folders. If you have a test folder that is truly independent (recorded at a different time or by a different person), rely on that for your "truth" rather than the 20% validation split from the training folder.
+
+
