@@ -14,7 +14,7 @@ from PIL import Image
 from model import build_model
 
 SAVE_DIR   = "saved_models"
-MODEL_TYPE = "custom"    # "custom" | "transfer"
+MODEL_TYPE = "transfer"    # "custom" | "transfer"
 IMG_SIZE   = 64
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

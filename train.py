@@ -16,7 +16,7 @@ from data_preprocessing import get_dataloaders, DATASET_DIR
 from model import build_model
 
 # ─── Config ───────────────────────────────────────────────────────────────────
-MODEL_TYPE = "custom"    # "custom" | "transfer"
+MODEL_TYPE = "transfer"    # "custom" | "transfer"
 EPOCHS     = 30
 LR         = 1e-3
 SAVE_DIR   = "saved_models"
