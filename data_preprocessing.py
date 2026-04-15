@@ -12,13 +12,13 @@ from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
 # ─── Configuration ────────────────────────────────────────────────────────────
-IMG_SIZE    = 64
-BATCH_SIZE  = 32
-NUM_CLASSES = 29
-DATASET_DIR = "archive/asl_alphabet_train/asl_alphabet_train"
-SEED        = 42
+IMG_SIZE    = 64 # image size for training (64x64 is a good balance of speed and detail)
+BATCH_SIZE  = 32 # batch size for training (adjust based on your GPU memory)
+NUM_CLASSES = 29 # 26 letters + space + delete + nothing
+DATASET_DIR = "archive/asl_alphabet_train/asl_alphabet_train" # path to the unzipped training dataset
+SEED        = 42 # fixed seed for reproducibility (important for the train/val split)
 
-
+# Added Gaussian Noise as a custom transform for more realistic augmentation
 class AddGaussianNoise(object):
     def __init__(self, mean=0., std=1.):
         self.std = std
@@ -34,12 +34,12 @@ class AddGaussianNoise(object):
 
 # ─── Transforms ───────────────────────────────────────────────────────────────
 train_transforms = transforms.Compose([
-    # 1. Zoom/Crop (The "Aggressive" part)
+    # 1. Zoom/Crop
     # scale=(0.4, 1.0) means it can zoom in until only 40% of the hand is visible
     # ratio=(0.9, 1.1) keeps the hand from looking too "stretched"
     transforms.RandomResizedCrop(IMG_SIZE, scale=(0.4, 1.0), ratio=(0.75, 1.33)),
     
-    # 2. Hand Orientation (The "Left/Right" fix)
+    # 2. Hand Orientation (The "Left/Right" handedness)
     transforms.RandomHorizontalFlip(p=0.5),
     
     # 3. Angle and Position
@@ -48,15 +48,15 @@ train_transforms = transforms.Compose([
     
     # 4. Lighting and Texture
     transforms.ColorJitter(brightness=0.3, contrast=0.3),
-    transforms.ToTensor(),
-    AddGaussianNoise(0., 0.05),
-    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    transforms.ToTensor(), # Convert to tensor before adding noise
+    AddGaussianNoise(0., 0.05), # Add Gaussian noise with mean=0 and std=0.05
+    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # Normalize
 ])
 
 val_transforms = transforms.Compose([
-    transforms.Resize((IMG_SIZE, IMG_SIZE)),
-    transforms.ToTensor(),
-    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    transforms.Resize((IMG_SIZE, IMG_SIZE)), # Just resize for validation - no augmentation
+    transforms.ToTensor(), # Convert to tensor before normalization
+    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # Normalize
 ])
 
 
