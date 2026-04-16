@@ -78,19 +78,21 @@ def get_dataloaders(dataset_dir: str = DATASET_DIR):
     val_indices   = indices[:val_size]   # last 20%
 
     # Two ImageFolder instances so each split gets its own transform
-    train_dataset = datasets.ImageFolder(dataset_dir, transform=train_transforms)
-    val_dataset   = datasets.ImageFolder(dataset_dir, transform=val_transforms)
+    train_dataset = datasets.ImageFolder(dataset_dir, transform=train_transforms) # train gets augmentation
+    val_dataset   = datasets.ImageFolder(dataset_dir, transform=val_transforms) # val gets only resizing and normalization
 
     train_subset = Subset(train_dataset, train_indices)
     val_subset   = Subset(val_dataset,   val_indices)
 
-    # Sanity check - no overlap
+    # Check for overlap
     overlap = set(train_indices) & set(val_indices)
     assert len(overlap) == 0, f"DATA LEAKAGE: {len(overlap)} overlapping indices!"
     print(f"  Train samples : {len(train_indices)}")
     print(f"  Val samples   : {len(val_indices)}")
     print(f"  Overlap       : {len(overlap)}  ✓")
 
+    # Create DataLoaders with shuffling for training and no shuffling for validation
+    # A DataLoader is created for each subset to ensure they use the correct transforms and have no index overlap
     train_loader = DataLoader(train_subset, batch_size=BATCH_SIZE,
                               shuffle=True,  num_workers=2, pin_memory=True)
     val_loader   = DataLoader(val_subset,   batch_size=BATCH_SIZE,
@@ -101,6 +103,7 @@ def get_dataloaders(dataset_dir: str = DATASET_DIR):
 
 # ─── Visualise a batch ────────────────────────────────────────────────────────
 def visualise_samples(loader, class_names, n=16):
+    # Get a batch of images and labels from the loader
     images, labels = next(iter(loader))
     images = images * 0.5 + 0.5
     images = images.permute(0, 2, 3, 1).numpy()
