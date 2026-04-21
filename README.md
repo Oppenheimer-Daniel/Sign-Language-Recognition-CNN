@@ -62,7 +62,7 @@ python predict_webcam.py
 - Switch `MODEL_TYPE` at the top of each script to toggle between models
 
 ## Training Results
-The Transfer Learning model (MobileNetV2) achieved 97%+ accuracy on the test set.
+The Transfer Learning model (MobileNetV2) achieved 99.98%+ accuracy on the test set.
 
 ![Training Curves](Transfer_model_results_train_2.png)
 ![Confusion Matrix](Transfer_model_results.png)
