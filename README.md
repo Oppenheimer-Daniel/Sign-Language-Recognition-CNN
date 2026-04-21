@@ -1,6 +1,6 @@
 # Sign Language Recognition – ASL Alphabet CNN (PyTorch)
 
-Deep learning pipeline to classify all **26 ASL alphabet letters** from hand gesture images, with real-time webcam inference on GPU.
+Deep learning pipeline to classify all **29 ASL alphabet letters** from hand gesture images, with real-time webcam inference on GPU.
 
 ---
 
