@@ -11,3 +11,8 @@ __pycache__/
 # Ignore local visualization results
 sample_images.png
 training_curves.png
+
+# Ignore virtual environments
+.venv/
+venv/
+env/

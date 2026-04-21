@@ -16,6 +16,9 @@ IMG_SIZE    = 64 # image size for training (64x64 is a good balance of speed and
 BATCH_SIZE  = 32 # batch size for training (adjust based on your GPU memory)
 NUM_CLASSES = 29 # 26 letters + space + delete + nothing
 DATASET_DIR = "archive/asl_alphabet_train/asl_alphabet_train" # path to the unzipped training dataset
+if not os.path.exists(DATASET_DIR):
+    print(f"Error: Dataset not found at {DATASET_DIR}. Please download it from Kaggle.")
+    exit()
 SEED        = 42 # fixed seed for reproducibility (important for the train/val split)
 
 # Added Gaussian Noise as a custom transform for more realistic augmentation
@@ -79,19 +82,21 @@ def get_dataloaders(dataset_dir: str = DATASET_DIR):
     val_indices   = indices[:val_size]   # last 20%
 
     # Two ImageFolder instances so each split gets its own transform
-    train_dataset = datasets.ImageFolder(dataset_dir, transform=train_transforms)
-    val_dataset   = datasets.ImageFolder(dataset_dir, transform=val_transforms)
+    train_dataset = datasets.ImageFolder(dataset_dir, transform=train_transforms) # train gets augmentation
+    val_dataset   = datasets.ImageFolder(dataset_dir, transform=val_transforms) # val gets only resizing and normalization
 
     train_subset = Subset(train_dataset, train_indices)
     val_subset   = Subset(val_dataset,   val_indices)
 
-    # Sanity check - no overlap
+    # Check for overlap
     overlap = set(train_indices) & set(val_indices)
     assert len(overlap) == 0, f"DATA LEAKAGE: {len(overlap)} overlapping indices!"
     print(f"  Train samples : {len(train_indices)}")
     print(f"  Val samples   : {len(val_indices)}")
     print(f"  Overlap       : {len(overlap)}  ✓")
 
+    # Create DataLoaders with shuffling for training and no shuffling for validation
+    # A DataLoader is created for each subset to ensure they use the correct transforms and have no index overlap
     train_loader = DataLoader(train_subset, batch_size=BATCH_SIZE,
                               shuffle=True,  num_workers=2, pin_memory=True)
     val_loader   = DataLoader(val_subset,   batch_size=BATCH_SIZE,
@@ -102,6 +107,7 @@ def get_dataloaders(dataset_dir: str = DATASET_DIR):
 
 # ─── Visualise a batch ────────────────────────────────────────────────────────
 def visualise_samples(loader, class_names, n=16):
+    # Get a batch of images and labels from the loader
     images, labels = next(iter(loader))
     images = images * 0.5 + 0.5
     images = images.permute(0, 2, 3, 1).numpy()
