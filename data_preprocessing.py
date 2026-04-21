@@ -16,7 +16,7 @@ IMG_SIZE    = 64 # image size for training (64x64 is a good balance of speed and
 BATCH_SIZE  = 32 # batch size for training (adjust based on your GPU memory)
 NUM_CLASSES = 29 # 26 letters + space + delete + nothing
 DATASET_DIR = "archive/asl_alphabet_train/asl_alphabet_train" # path to the unzipped training dataset
-if not os.path.exists(DATASET_DIR):
+if not os.path.exists(DATASET_DIR): # if you get an error here, make sure you downloaded and unzipped the dataset correctly from Kaggle, and that the path is correct
     print(f"Error: Dataset not found at {DATASET_DIR}. Please download it from Kaggle.")
     exit()
 SEED        = 42 # fixed seed for reproducibility (important for the train/val split)

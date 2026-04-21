@@ -61,3 +61,9 @@ python predict_webcam.py
 - Training runs on your RTX 3060 automatically via CUDA
 - CustomCNN: ~2–5 min/epoch on GPU
 - Switch `MODEL_TYPE` at the top of each script to toggle between models
+
+## Training Results
+The Transfer Learning model (MobileNetV2) achieved 97%+ accuracy on the test set.
+
+![Training Curves](training_curves.png)
+![Confusion Matrix](Transfer_model_results.png)
