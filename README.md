@@ -11,7 +11,7 @@ sign_language_recognition/
 ├── model.py                # CustomCNN + TransferCNN (MobileNetV2)
 ├── train.py                # Training loop with early stopping & LR scheduling
 ├── evaluate.py             # Confusion matrix, per-class accuracy, report
-├── predict_webcam.py       # Live webcam inference (RTX 3060 accelerated)
+├── predict_webcam.py       # Live webcam inference
 ├── requirements.txt
 └── README.md
 ```
