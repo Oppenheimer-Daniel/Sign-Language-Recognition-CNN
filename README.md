@@ -58,8 +58,7 @@ python predict_webcam.py
 ---
 
 ## Notes
-- Training runs on your RTX 3060 automatically via CUDA
-- CustomCNN: ~2–5 min/epoch on GPU
+- TransferCNN: ~2–5 min/epoch on NVidia RTX 3060 GPU
 - Switch `MODEL_TYPE` at the top of each script to toggle between models
 
 ## Training Results
