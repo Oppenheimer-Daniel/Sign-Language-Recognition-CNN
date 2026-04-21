@@ -18,7 +18,7 @@ from model import build_model
 
 # ─── Config ───────────────────────────────────────────────────────────────────
 SAVE_DIR   = "saved_models"
-MODEL_TYPE = "custom"      # "custom" | "transfer"
+MODEL_TYPE = "transfer"      # "custom" | "transfer"
 TEST_DIR = "archive/asl_alphabet_test/asl_alphabet_test"
 IMG_SIZE   = 64
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -67,11 +67,12 @@ def get_dataloaders(dataset_dir: str = DATASET_DIR):
     Deterministic 80/20 split with no index overlap between train and val.
     """
     # Generate split indices once using a fixed seed
-    full_dataset = datasets.ImageFolder(dataset_dir, transform=val_transforms)
+    full_dataset = datasets.ImageFolder(dataset_dir, transform=val_transforms) # scans dataset folder and automatically assigns labels based on subfolder names
     class_names  = full_dataset.classes
     n            = len(full_dataset)
 
-    generator     = torch.Generator().manual_seed(SEED)
+    # with a new seed for each run, the train/val split will be different but still reproducible if you use the same seed again
+    generator     = torch.Generator().manual_seed(SEED) # creates a random generator with a fixed seed for reproducibility
     indices       = torch.randperm(n, generator=generator).tolist()
     val_size      = int(0.20 * n)
     train_indices = indices[val_size:]   # first 80%
