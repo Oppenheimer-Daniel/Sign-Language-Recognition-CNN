@@ -66,3 +66,7 @@ The Transfer Learning model (MobileNetV2) achieved 99.98%+ accuracy on the test 
 
 ![Training Curves](Transfer_model_results_train_2.png)
 ![Confusion Matrix](Transfer_model_results.png)
+
+## Demo
+<img width="800" height="600" alt="ASLSignLanguageRecognitionQquit2026-04-1513-52-33-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/de3018e3-262c-4267-8202-f3a249b2d9c7" />
+
